@@ -5,11 +5,11 @@
 
 This is the complete version of the task #2 of the practical test.
 
-<!-- ## Hosted (Netlify Link)
+## Hosted (Netlify Link)
 
 ```bash
-$ http:///
-``` -->
+$ https://jocular-fairy-05bde7.netlify.app/
+```
 
 ## Keep in touch
 
