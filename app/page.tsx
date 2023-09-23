@@ -18,8 +18,6 @@ export default function Home() {
     }
   };
 
-  console.log(shortenedUrl)
-
   return (
     <main>
       <Container>
