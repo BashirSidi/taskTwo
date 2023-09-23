@@ -1,55 +1,95 @@
 "use client"
-import { Box, Container, Link, Typography } from '@mui/material'
-import { getUrls } from './redux/features/urlShortenerSlice'
+import { Box, Container, Link, TextField, Typography } from '@mui/material'
+import { urlShortener } from './redux/features/urlShortenerSlice'
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from './redux/store';
+import { PrimaryButton } from './components/Buttons';
+import { useState } from 'react';
 
 
 export default function Home() {
-  const dispatch = useDispatch<AppDispatch>;
-  const urls = useSelector((state: any) => state.urlShortenerReducer.urls)
+  const [url, setUrl] = useState('')
+  const dispatch = useDispatch<AppDispatch>();
+  const { shortenedUrl, loading, error } = useSelector((state: any) => state.urlShortenerReducer)
+  
+  const handleShortenUrl = () => {
+    if (url) {
+      dispatch(urlShortener(url));
+    }
+  };
+
+  console.log(shortenedUrl)
+
   return (
     <main>
       <Container>
-        <Box>
-          <Typography
-            sx={{
-              mt: { xs: '10px', md: '60px' },
-              textAlign: 'center',
-              color: '#000',
-              fontSize:{ xs: '30px', md: '56px' },
-              fontWeight: { xs: 500, md: 700 },
-              lineHeight: '140%',
-            }}
-          >
-            URL Shortener
-          </Typography>
-
-          <Typography
-            sx={{
-              textAlign: 'center',
-              color: '#000',
-              mt: { xs: '16px', md: '20px' },
-              mb: { xs: '16px', md: '20px' },
-              fontSize: { xs: '14px', md: '18px' },
-              fontWeight: 400,
-              lineHeight: '160%',
-              mx: { xs: 'auto', md: 'auto' },
-              width: { xs: '90%', md: '518px' },
-            }}
-          >
-            URL shortener tool using 
-            <Link href="https://shrtco.de/docs" underline="none">
-              {' https://shrtco.de/docs'}
-            </Link>
-          </Typography>
+        <Box
+          sx={{
+            mt: '50px',
+          }}
+        >
 
           <Box
             sx={{
-              textAlign: 'center',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              mt: '16px'
             }}
           >
-            urls{JSON.stringify(urls)}
+            <TextField
+              id="outlined-basic"
+              label="Input The URL"
+              variant="outlined"
+              value={url}
+              onChange={({target}) => setUrl(target.value)}
+              sx={{
+                marginRight: '30px'
+              }}
+            />
+            <PrimaryButton
+              onClick={handleShortenUrl}
+              disabled={loading}
+            >
+              Shorten
+            </PrimaryButton>
+          </Box>
+          <Box
+            sx={{
+              ml: { xs: '5%', md: '35%' },
+              mt: '20px'
+            }}
+          >
+            {loading && <Box>Loading...</Box>}
+            {error && <Box>Error: {error}</Box>}
+            {shortenedUrl && (
+              <Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'start',
+                    justifyContent: 'start',
+                  }}
+                >
+                  <Typography mr={2} variant='h5'>Short url: </Typography>
+                  <Link variant='h5' rel="preload" href={shortenedUrl?.full_short_link} underline="none">
+                    {shortenedUrl?.short_link}
+                  </Link>
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'start',
+                    justifyContent: 'start',
+                  }}
+                >
+                  <Typography mr={2} variant='h5'>Short url 2: </Typography>
+                  <Link variant='h5' rel="preload" href={shortenedUrl?.full_short_link2} underline="none">
+                    {shortenedUrl?.short_link2}
+                  </Link>
+                </Box>
+              </Box>
+            )}
           </Box>
         </Box>
         </Container>

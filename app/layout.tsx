@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ThemeRegistry>
-        <body className={inter.className}>
+        <body suppressHydrationWarning={true} className={inter.className}>
           <ReduxProvider>
             {children}
           </ReduxProvider>
